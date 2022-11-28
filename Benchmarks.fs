@@ -4,36 +4,37 @@ open System
 open BenchmarkDotNet
 open BenchmarkDotNet.Attributes
 
+module InsertData = 
+    (* Zipper data for IterationSetup *)
+    let emptyZipper = ListZipper.empty
+    let mutable zipper = emptyZipper
+
+    (* Random number data for insertion tests *)
+    let mutable rnd = System.Random()
+    let mutable randomInsNum = 0
+    let beforeInsNum = -100 (* This number is below all the numbers already in the structure. *)
+    let afterInsNum = 99_999 (* This number is larger than all the numbers already in the structure. *)
+
+[<HtmlExporter>]
 type Benchmarks () =
-    [<Params(0, 1, 15, 100)>]
-    member val public sleepTime = 0 with get, set
+    [<Params(10, 100, 1000, 10_000)>]
+    member val public structureSize = 0 with get, set
 
-    // [<GlobalSetup>]
-    // member self.GlobalSetup() =
-    //     printfn "%s" "Global Setup"
+    [<IterationSetup>]
+    member this.createWithSize() =
+        InsertData.zipper <- InsertData.emptyZipper
+        InsertData.randomInsNum <- InsertData.rnd.Next()
+        for i in [0..this.structureSize] do
+            InsertData.zipper <- ListZipper.insert i InsertData.zipper
 
-    // [<GlobalCleanup>]
-    // member self.GlobalCleanup() =
-    //     printfn "%s" "Global Cleanup"
+    [<Benchmark; IterationCount 10>]
+    member this.``Random ListZipper.insert``() =
+        ListZipper.insert InsertData.randomInsNum InsertData.zipper
 
-    // [<IterationSetup>]
-    // member self.IterationSetup() =
-    //     printfn "%s" "Iteration Setup"
-    
-    // [<IterationCleanup>]
-    // member self.IterationCleanup() =
-    //     printfn "%s" "Iteration Cleanup"
+    [<Benchmark; IterationCount 10>]
+    member this.``ListZipper.insert at start``() =
+        ListZipper.insert InsertData.beforeInsNum InsertData.zipper
 
-    [<Benchmark>]
-    member this.Thread () = System.Threading.Thread.Sleep(this.sleepTime)
-
-    [<Benchmark>]
-    member this.Task () = System.Threading.Tasks.Task.Delay(this.sleepTime)
-
-    [<Benchmark>]
-    member this.AsyncToTask () = Async.Sleep(this.sleepTime) |> Async.StartAsTask
-
-    [<Benchmark>]
-    member this.AsyncToSync () = Async.Sleep(this.sleepTime) |> Async.RunSynchronously
-
-
+    [<Benchmark; IterationCount 10>]
+    member this.``ListZipper.insert at end``() =
+        ListZipper.insert InsertData.afterInsNum InsertData.zipper
