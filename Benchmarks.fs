@@ -3,6 +3,7 @@
 open System
 open BenchmarkDotNet
 open BenchmarkDotNet.Attributes
+open BenchmarkDotNet.Running
 
 module InsertData = 
     (* Zipper data for IterationSetup *)
@@ -15,8 +16,8 @@ module InsertData =
     let beforeInsNum = -100 (* This number is below all the numbers already in the structure. *)
     let afterInsNum = 99_999 (* This number is larger than all the numbers already in the structure. *)
 
-[<HtmlExporter>]
-type Benchmarks () =
+[<MemoryDiagnoser; HtmlExporter>]
+type Insert () =
     [<Params(10, 100, 1000, 10_000)>]
     member val public structureSize = 0 with get, set
 
@@ -27,14 +28,20 @@ type Benchmarks () =
         for i in [0..this.structureSize] do
             InsertData.zipper <- ListZipper.insert i InsertData.zipper
 
-    [<Benchmark; IterationCount 10>]
-    member this.``Random ListZipper.insert``() =
+    [<Benchmark(Description = "Random ListZipper.insert"); IterationCount 10>]
+    member this.RandomListZipperInsert() =
         ListZipper.insert InsertData.randomInsNum InsertData.zipper
 
-    [<Benchmark; IterationCount 10>]
-    member this.``ListZipper.insert at start``() =
+    [<Benchmark(Description = "ListZipper.insert at start"); IterationCount 10>]
+    member this.ListZipperInsertAtStart() =
         ListZipper.insert InsertData.beforeInsNum InsertData.zipper
 
-    [<Benchmark; IterationCount 10>]
-    member this.``ListZipper.insert at end``() =
+    [<Benchmark(Description = "ListZipper.insert at end"); IterationCount 10>]
+    member this.ListZipperInsertAtEnd() =
         ListZipper.insert InsertData.afterInsNum InsertData.zipper
+
+module Main = 
+    [<EntryPoint>]
+    let Main _ =
+        BenchmarkRunner.Run<Insert>() |> ignore
+        0

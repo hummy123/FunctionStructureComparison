@@ -14,13 +14,12 @@
     <SourceRoot Include="C:\Program Files (x86)\Microsoft Visual Studio\Shared\NuGetPackages\" />
   </ItemGroup>
   <ImportGroup Condition=" '$(ExcludeRestorePackageImports)' != 'true' ">
-    <Import Project="$(NuGetPackageRoot)microsoft.diagnostics.tracing.traceevent\2.0.49\build\Microsoft.Diagnostics.Tracing.TraceEvent.props" Condition="Exists('$(NuGetPackageRoot)microsoft.diagnostics.tracing.traceevent\2.0.49\build\Microsoft.Diagnostics.Tracing.TraceEvent.props')" />
+    <Import Project="$(NuGetPackageRoot)microsoft.diagnostics.tracing.traceevent\3.0.2\buildTransitive\Microsoft.Diagnostics.Tracing.TraceEvent.props" Condition="Exists('$(NuGetPackageRoot)microsoft.diagnostics.tracing.traceevent\3.0.2\buildTransitive\Microsoft.Diagnostics.Tracing.TraceEvent.props')" />
   </ImportGroup>
   <PropertyGroup Condition=" '$(ExcludeRestorePackageImports)' != 'true' ">
-    <PkgNETStandard_Library Condition=" '$(PkgNETStandard_Library)' == '' ">C:\Users\humza\.nuget\packages\netstandard.library\2.0.3</PkgNETStandard_Library>
-    <PkgMicrosoft_CodeAnalysis_Analyzers Condition=" '$(PkgMicrosoft_CodeAnalysis_Analyzers)' == '' ">C:\Users\humza\.nuget\packages\microsoft.codeanalysis.analyzers\2.6.1</PkgMicrosoft_CodeAnalysis_Analyzers>
+    <PkgMicrosoft_CodeAnalysis_Analyzers Condition=" '$(PkgMicrosoft_CodeAnalysis_Analyzers)' == '' ">C:\Users\humza\.nuget\packages\microsoft.codeanalysis.analyzers\2.6.2-beta2</PkgMicrosoft_CodeAnalysis_Analyzers>
     <PkgFSharp_Core Condition=" '$(PkgFSharp_Core)' == '' ">C:\Users\humza\.nuget\packages\fsharp.core\7.0.0</PkgFSharp_Core>
-    <PkgBenchmarkDotNet Condition=" '$(PkgBenchmarkDotNet)' == '' ">C:\Users\humza\.nuget\packages\benchmarkdotnet\0.12.1</PkgBenchmarkDotNet>
+    <PkgBenchmarkDotNet Condition=" '$(PkgBenchmarkDotNet)' == '' ">C:\Users\humza\.nuget\packages\benchmarkdotnet\0.13.2</PkgBenchmarkDotNet>
     <PkgBenchmarkDotNet_Diagnostics_Windows Condition=" '$(PkgBenchmarkDotNet_Diagnostics_Windows)' == '' ">C:\Users\humza\.nuget\packages\benchmarkdotnet.diagnostics.windows\0.12.1</PkgBenchmarkDotNet_Diagnostics_Windows>
   </PropertyGroup>
 </Project>
