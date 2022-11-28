@@ -18,7 +18,7 @@ module InsertData =
 
 [<MemoryDiagnoser; HtmlExporter>]
 type Insert () =
-    [<Params(10, 100, 1000, 10_000)>]
+    [<Params(100, 1000, 10_000)>]
     member val public structureSize = 0 with get, set
 
     [<IterationSetup>]
