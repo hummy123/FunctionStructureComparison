@@ -10,6 +10,10 @@ module InsertData =
     let emptyZipper = ListZipper.empty
     let mutable zipper = emptyZipper
 
+    (* RbTree data for IterationSetup *)
+    let emptyTree = RedBlackTree.empty
+    let mutable tree = emptyTree
+
     (* Random number data for insertion tests *)
     let mutable rnd = System.Random()
     let mutable randomInsNum = 0
@@ -24,21 +28,37 @@ type Insert () =
     [<IterationSetup>]
     member this.createWithSize() =
         InsertData.zipper <- InsertData.emptyZipper
+        InsertData.tree <- InsertData.emptyTree
         InsertData.randomInsNum <- InsertData.rnd.Next(0, this.structureSize)
         for i in [0..this.structureSize] do
             InsertData.zipper <- ListZipper.insert i InsertData.zipper
-
-    [<Benchmark(Description = "Random ListZipper.insert"); IterationCount 10>]
-    member this.RandomListZipperInsert() =
-        ListZipper.insert InsertData.randomInsNum InsertData.zipper
+            InsertData.tree <- RedBlackTree.insert i InsertData.tree
 
     [<Benchmark(Description = "ListZipper.insert at start"); IterationCount 10>]
     member this.ListZipperInsertAtStart() =
         ListZipper.insert InsertData.beforeInsNum InsertData.zipper
 
+    [<Benchmark(Description = "Random ListZipper.insert"); IterationCount 10>]
+    member this.RandomListZipperInsert() =
+        ListZipper.insert InsertData.randomInsNum InsertData.zipper
+
     [<Benchmark(Description = "ListZipper.insert at end"); IterationCount 10>]
     member this.ListZipperInsertAtEnd() =
         ListZipper.insert InsertData.afterInsNum InsertData.zipper
+
+    [<Benchmark(Description = "RbTree.insert at start"); IterationCount 10>]
+    member this.RbTreeInsertAtStart() =
+        RedBlackTree.insert InsertData.beforeInsNum InsertData.tree
+
+    [<Benchmark(Description = "Random RbTree.insert"); IterationCount 10>]
+    member this.RandomRbTreeInsert() =
+        RedBlackTree.insert InsertData.randomInsNum InsertData.tree
+
+    [<Benchmark(Description = "RbTree.insert at end"); IterationCount 10>]
+    member this.RbTreeInsertAtEnd() =
+        RedBlackTree.insert InsertData.afterInsNum InsertData.tree
+
+
 
 module Main = 
     [<EntryPoint>]
