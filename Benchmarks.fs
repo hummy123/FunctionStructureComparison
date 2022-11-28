@@ -24,7 +24,7 @@ type Insert () =
     [<IterationSetup>]
     member this.createWithSize() =
         InsertData.zipper <- InsertData.emptyZipper
-        InsertData.randomInsNum <- InsertData.rnd.Next()
+        InsertData.randomInsNum <- InsertData.rnd.Next(0, this.structureSize)
         for i in [0..this.structureSize] do
             InsertData.zipper <- ListZipper.insert i InsertData.zipper
 
