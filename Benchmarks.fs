@@ -14,11 +14,11 @@ module InsertData =
     let mutable rnd = System.Random()
     let mutable randomInsNum = 0
     let beforeInsNum = -100 (* This number is below all the numbers already in the structure. *)
-    let afterInsNum = 99_999 (* This number is larger than all the numbers already in the structure. *)
+    let afterInsNum = 9000_000 (* This number is larger than all the numbers already in the structure. *)
 
 [<MemoryDiagnoser; HtmlExporter>]
 type Insert () =
-    [<Params(100, 1000, 10_000)>]
+    [<Params(100, 1000, 10_000, 100_000, 1000_000)>]
     member val public structureSize = 0 with get, set
 
     [<IterationSetup>]
