@@ -12,6 +12,7 @@
     <PackageReference Include="BenchmarkDotNet.Diagnostics.Windows" Version="0.12.1" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="RedBlackTree.fs" />
     <Compile Include="ListZipper.fs" />
     <Compile Include="Benchmarks.fs" />
   </ItemGroup>
