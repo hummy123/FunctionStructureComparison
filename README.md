@@ -11,16 +11,19 @@ The reason the "insert at end" benchmarks for the list zipper below are so fast 
 ## Benchmarks
 
 
+``` ini
+
 BenchmarkDotNet=v0.13.2, OS=Windows 11 (10.0.22000.1219/21H2)
 AMD Ryzen 3 5300U with Radeon Graphics, 1 CPU, 8 logical and 4 physical cores
 .NET SDK=7.0.100
   [Host]     : .NET 6.0.11 (6.0.1122.52304), X64 RyuJIT AVX2 DEBUG
-  Job-PKYHAC : .NET 6.0.11 (6.0.1122.52304), X64 RyuJIT AVX2
+  Job-PZTXOX : .NET 6.0.11 (6.0.1122.52304), X64 RyuJIT AVX2
 
 InvocationCount=1  IterationCount=10  UnrollFactor=1  
 
-                       Method | structureSize |             Mean |           Error |           StdDev |           Median |       Gen0 |      Gen1 |  Allocated |
------------------------------ |-------------- |-----------------:|----------------:|-----------------:|-----------------:|-----------:|----------:|-----------:|
+```
+|                       Method | structureSize |           Mean |          Error |         StdDev |       Gen0 |      Gen1 |      Gen2 |  Allocated |
+|----------------------------- |-------------- |---------------:|---------------:|---------------:|-----------:|----------:|----------:|-----------:|
  **'ListZipper.insert at start'** |           **100** |       **4,188.9 ns** |        **319.3 ns** |        **190.03 ns** |       **4,200.0 ns** |          **-** |         **-** |     **6944 B** |
      'RbTree.insert at start' |           100 |       2,612.5 ns |        462.0 ns |        241.65 ns |       2,550.0 ns |          - |         - |      864 B |
    'Random ListZipper.insert' |           100 |       3,300.0 ns |      2,324.7 ns |      1,537.68 ns |       3,100.0 ns |          - |         - |     5856 B |
