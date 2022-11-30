@@ -38,27 +38,25 @@ type Insert () =
     member this.ListZipperInsertAtStart() =
         ListZipper.insert InsertData.beforeInsNum InsertData.zipper
 
-    [<Benchmark(Description = "Random ListZipper.insert"); IterationCount 10>]
-    member this.RandomListZipperInsert() =
-        ListZipper.insert InsertData.randomInsNum InsertData.zipper
-
-    [<Benchmark(Description = "ListZipper.insert at end"); IterationCount 10>]
-    member this.ListZipperInsertAtEnd() =
-        ListZipper.insert InsertData.afterInsNum InsertData.zipper
-
     [<Benchmark(Description = "RbTree.insert at start"); IterationCount 10>]
     member this.RbTreeInsertAtStart() =
         RedBlackTree.insert InsertData.beforeInsNum InsertData.tree
+
+    [<Benchmark(Description = "Random ListZipper.insert"); IterationCount 10>]
+    member this.RandomListZipperInsert() =
+        ListZipper.insert InsertData.randomInsNum InsertData.zipper
 
     [<Benchmark(Description = "Random RbTree.insert"); IterationCount 10>]
     member this.RandomRbTreeInsert() =
         RedBlackTree.insert InsertData.randomInsNum InsertData.tree
 
+    [<Benchmark(Description = "ListZipper.insert at end"); IterationCount 10>]
+    member this.ListZipperInsertAtEnd() =
+        ListZipper.insert InsertData.afterInsNum InsertData.zipper
+
     [<Benchmark(Description = "RbTree.insert at end"); IterationCount 10>]
     member this.RbTreeInsertAtEnd() =
         RedBlackTree.insert InsertData.afterInsNum InsertData.tree
-
-
 
 module Main = 
     [<EntryPoint>]
