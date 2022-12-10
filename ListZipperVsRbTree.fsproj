@@ -13,6 +13,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="IntMap.fs" />
+    <Compile Include="AATree.fs" />
     <Compile Include="RedBlackTree.fs" />
     <Compile Include="ListZipper.fs" />
     <Compile Include="Benchmarks.fs" />

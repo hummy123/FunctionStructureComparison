@@ -12,13 +12,13 @@ module ListZipper =
         match zipper.Focus with
         | fHead::fList ->
             { Focus = fList; Path = fHead::zipper.Path }
-        | [] -> failwith "Tried to move zipper next when we are at end."
+        | [] -> zipper
 
     let private prev zipper =
         match zipper.Path with
         | pHead::pList ->
             { Focus = pHead::zipper.Focus; Path = pList }
-        | [] -> failwith "Tried to move zipper back when we are at start."
+        | [] -> zipper
 
     let rec insert insNum zipper =
         match zipper.Path, zipper.Focus with
@@ -36,7 +36,10 @@ module ListZipper =
             {zipper with Focus = insNum::zipper.Focus}
         (* When focus is greater than insNum, recurse and try inserting at previous. *)
         | _, fHead::_ when fHead > insNum ->
-            insert insNum (prev zipper)
+            let difference = fHead - insNum
+            let newFocus = zipper.Path[0..(difference - 1)] @ zipper.Focus
+            let newPath = zipper.Path[difference..]
+            { zipper with Focus = insNum::newFocus; Path = newPath }
         (* When focus is less than insNum but we are at end of zipper, insert insNum at end. *)
         | p, [f] when f < insNum -> 
             {Focus = [insNum]; Path = f::p;}

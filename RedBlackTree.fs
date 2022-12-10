@@ -11,7 +11,8 @@ module RedBlackTree =
 
     let empty = E
 
-    let balance = function                              (* Red nodes in relation to black root *)
+    let balance (a, b, c, d) =                               (* Red nodes in relation to black root *)
+        match a, b, c, d with
         | B, T(R, T(R, a, x, b), y, c), z, d            (* Left, left *)
         | B, T(R, a, x, T(R, b, y, c)), z, d            (* Left, right *)
         | B, a, x, T(R, T(R, b, y, c), z, d)            (* Right, left *)
@@ -31,3 +32,8 @@ module RedBlackTree =
         match ins tree with
             | E -> failwith "Should never return empty from an insert"
             | T(_, l, x, r) -> T(B, l, x, r)
+
+    let rec findMax tree =
+        match tree with
+        | E -> E
+        | T(_, _, _, r) -> findMax r

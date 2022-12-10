@@ -49,3 +49,9 @@ module IntMap =
         | Tip(ky) when k = ky -> Tip(k)
         | Tip(ky) -> join k (Tip(k)) ky t
         | Nil -> Tip(k)
+
+    let rec findMax =
+        function
+        | Nil -> None
+        | Tip(ky) -> Some(ky)
+        | Bin(_, _, _, r) -> findMax r
