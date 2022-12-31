@@ -22,6 +22,8 @@ module InsertData =
     let emptyAaTree = AATree.emppty
     let mutable aaTree = emptyAaTree
 
+    let mutable broTree = BrotherTree.empty
+
     (* Random number data for insertion tests *)
     let mutable rnd = System.Random()
     let mutable randomInsNum = 0
@@ -75,6 +77,39 @@ type AaTreeBenchmarks() =
     [<Benchmark(Description = "AaTree.insert at end"); IterationCount 10>]
     member this.RbTreeInsertAtEnd() =
         AATree.insert InsertData.afterInsNum InsertData.aaTree
+
+    [<Benchmark(Description = "AaTree.findMax"); IterationCount 10>]
+    member this.RbTreeFindMax() =
+        RedBlackTree.findMax InsertData.tree
+
+
+[<MemoryDiagnoser; HtmlExporter; MarkdownExporter>]
+type BroTreeBenchmarks() =
+    [<Params(100, 1000, 10_000, 100_000, 1000_000)>]
+    member val public structureSize = 0 with get, set
+
+    [<IterationSetup>]
+    member this.createWithSize() =
+        InsertData.broTree <- BrotherTree.empty
+        InsertData.randomInsNum <- InsertData.rnd.Next(0, this.structureSize)
+        for i in [0..this.structureSize] do
+            InsertData.broTree <- BrotherTree.insert i InsertData.broTree
+
+    [<Benchmark(Description = "BroTree.insert at start"); IterationCount 10>]
+    member this.RbTreeInsertAtStart() =
+        BrotherTree.insert InsertData.beforeInsNum InsertData.broTree
+
+    [<Benchmark(Description = "Random BroTree.insert"); IterationCount 10>]
+    member this.RandomRbTreeInsert() =
+        BrotherTree.insert InsertData.randomInsNum InsertData.broTree
+
+    [<Benchmark(Description = "BroTree.insert at end"); IterationCount 10>]
+    member this.RbTreeInsertAtEnd() =
+        BrotherTree.insert InsertData.afterInsNum InsertData.broTree
+
+    [<Benchmark(Description = "BroTree.findMax"); IterationCount 10>]
+    member this.IntMapFindMax() =
+        BrotherTree.findMax InsertData.broTree
 
 [<MemoryDiagnoser; HtmlExporter; MarkdownExporter>]
 type RbTreeBenchmarks() =
@@ -135,8 +170,5 @@ type IntMapBenchmarks() =
 module Main = 
     [<EntryPoint>]
     let Main _ =
-        BenchmarkRunner.Run<ListZipperBenchmarks>() |> ignore
-        BenchmarkRunner.Run<AaTreeBenchmarks>() |> ignore
-        BenchmarkRunner.Run<RbTreeBenchmarks>() |> ignore
-        BenchmarkRunner.Run<IntMapBenchmarks>() |> ignore
+        BenchmarkRunner.Run<BroTreeBenchmarks>() |> ignore
         0

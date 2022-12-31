@@ -27,3 +27,8 @@ module AATree =
             elif item > v
             then split <| (skew <| T(h, l, v, insert item r))
             else node
+
+    let rec findMax tree =
+        match tree with
+        | E -> E
+        | T(_, _, _, r) -> findMax r
