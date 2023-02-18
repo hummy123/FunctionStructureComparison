@@ -26,6 +26,8 @@ module InsertData =
 
     let mutable twotree = TwoThree.empty
 
+    let mutable twofour = TwoFour.empty
+
     (* Random number data for insertion tests *)
     let mutable rnd = System.Random()
     let mutable randomInsNum = 0
@@ -123,6 +125,38 @@ type TwoThreeBenchmarks() =
         TwoThree.insert InsertData.afterInsNum InsertData.twotree
 
 [<MemoryDiagnoser; HtmlExporter; MarkdownExporter>]
+type TwoFourBenchmarks() =
+    [<Params(100, 1000, 10_000, 100_000, 1000_000)>]
+    member val public structureSize = 0 with get, set
+
+    [<IterationSetup>]
+    member this.createWithSize() =
+        InsertData.twofour <- TwoFour.empty
+        InsertData.randomInsNum <- InsertData.rnd.Next(0, this.structureSize)
+        for i in [0..this.structureSize] do
+            InsertData.twofour <- TwoFour.insert i InsertData.twofour
+
+    [<Benchmark(Description = "TwoFour.buildup"); IterationCount 10>]
+    member this.buildUp() =
+        let mutable tree = TwoFour.empty
+        InsertData.randomInsNum <- InsertData.rnd.Next(0, this.structureSize)
+        for i in [0..this.structureSize] do
+            tree <- TwoFour.insert i tree
+
+    [<Benchmark(Description = "AaTree.insert at start"); IterationCount 10>]
+    member this.RbTreeInsertAtStart() =
+        TwoFour.insert InsertData.beforeInsNum InsertData.twofour
+
+    [<Benchmark(Description = "Random AaTree.insert"); IterationCount 10>]
+    member this.RandomRbTreeInsert() =
+        TwoFour.insert InsertData.randomInsNum InsertData.twofour
+
+    [<Benchmark(Description = "AaTree.insert at end"); IterationCount 10>]
+    member this.RbTreeInsertAtEnd() =
+        TwoFour.insert InsertData.afterInsNum InsertData.twofour
+
+
+[<MemoryDiagnoser; HtmlExporter; MarkdownExporter>]
 type BroTreeBenchmarks() =
     [<Params(100, 1000, 10_000, 100_000, 1000_000)>]
     member val public structureSize = 0 with get, set
@@ -211,4 +245,5 @@ module Main =
     let Main _ =
         BenchmarkRunner.Run<AaTreeBenchmarks>() |> ignore
         BenchmarkRunner.Run<TwoThreeBenchmarks>() |> ignore
+        BenchmarkRunner.Run<TwoFourBenchmarks>() |> ignore
         0

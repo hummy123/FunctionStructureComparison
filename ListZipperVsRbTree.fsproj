@@ -15,6 +15,7 @@
     <Compile Include="IntMap.fs" />
     <Compile Include="AATree.fs" />
     <Compile Include="TwoThree.fs" />
+    <Compile Include="TwoFour.fs" />
     <Compile Include="BrotherTree.fs" />
     <Compile Include="RedBlackTree.fs" />
     <Compile Include="ListZipper.fs" />
