@@ -24,6 +24,8 @@ module InsertData =
 
     let mutable broTree = BrotherTree.empty
 
+    let mutable twotree = TwoThree.empty
+
     (* Random number data for insertion tests *)
     let mutable rnd = System.Random()
     let mutable randomInsNum = 0
@@ -66,6 +68,13 @@ type AaTreeBenchmarks() =
         for i in [0..this.structureSize] do
             InsertData.aaTree <- AATree.insert i InsertData.aaTree
 
+    [<Benchmark(Description = "AaTree.buildup"); IterationCount 10>]
+    member this.buildUp() =
+        let mutable tree = InsertData.emptyAaTree
+        InsertData.randomInsNum <- InsertData.rnd.Next(0, this.structureSize)
+        for i in [0..this.structureSize] do
+            tree <- AATree.insert i tree
+    
     [<Benchmark(Description = "AaTree.insert at start"); IterationCount 10>]
     member this.RbTreeInsertAtStart() =
         AATree.insert InsertData.beforeInsNum InsertData.aaTree
@@ -78,10 +87,40 @@ type AaTreeBenchmarks() =
     member this.RbTreeInsertAtEnd() =
         AATree.insert InsertData.afterInsNum InsertData.aaTree
 
-    [<Benchmark(Description = "AaTree.findMax"); IterationCount 10>]
-    member this.RbTreeFindMax() =
-        RedBlackTree.findMax InsertData.tree
+    // [<Benchmark(Description = "AaTree.findMax"); IterationCount 10>]
+    // member this.RbTreeFindMax() =
+    //     RedBlackTree.findMax InsertData.tree
 
+[<MemoryDiagnoser; HtmlExporter; MarkdownExporter>]
+type TwoThreeBenchmarks() =
+    [<Params(100, 1000, 10_000, 100_000, 1000_000)>]
+    member val public structureSize = 0 with get, set
+
+    [<IterationSetup>]
+    member this.createWithSize() =
+        InsertData.twotree <- TwoThree.empty
+        InsertData.randomInsNum <- InsertData.rnd.Next(0, this.structureSize)
+        for i in [0..this.structureSize] do
+            InsertData.twotree <- TwoThree.insert i InsertData.twotree
+
+    [<Benchmark(Description = "TwoThree.buildup"); IterationCount 10>]
+    member this.buildUp() =
+        let mutable tree = TwoThree.empty
+        InsertData.randomInsNum <- InsertData.rnd.Next(0, this.structureSize)
+        for i in [0..this.structureSize] do
+            tree <- TwoThree.insert i tree
+
+    [<Benchmark(Description = "AaTree.insert at start"); IterationCount 10>]
+    member this.RbTreeInsertAtStart() =
+        TwoThree.insert InsertData.beforeInsNum InsertData.twotree
+
+    [<Benchmark(Description = "Random AaTree.insert"); IterationCount 10>]
+    member this.RandomRbTreeInsert() =
+        TwoThree.insert InsertData.randomInsNum InsertData.twotree
+
+    [<Benchmark(Description = "AaTree.insert at end"); IterationCount 10>]
+    member this.RbTreeInsertAtEnd() =
+        TwoThree.insert InsertData.afterInsNum InsertData.twotree
 
 [<MemoryDiagnoser; HtmlExporter; MarkdownExporter>]
 type BroTreeBenchmarks() =
@@ -170,5 +209,6 @@ type IntMapBenchmarks() =
 module Main = 
     [<EntryPoint>]
     let Main _ =
-        BenchmarkRunner.Run<BroTreeBenchmarks>() |> ignore
+        BenchmarkRunner.Run<AaTreeBenchmarks>() |> ignore
+        BenchmarkRunner.Run<TwoThreeBenchmarks>() |> ignore
         0
